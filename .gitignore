@@ -1,0 +1,14 @@
+build/
+*.elf
+*.hex
+*.bin
+*.map
+*.o
+*.d
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+secrets.h
+credentials.h
+.env
