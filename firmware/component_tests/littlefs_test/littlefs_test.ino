@@ -1,4 +1,5 @@
 #include <Arduino.h>
 #include <LittleFS.h>
-void setup(){Serial.begin(115200);if(!LittleFS.begin(true)){Serial.println("LittleFS mount failed");return;}File f=LittleFS.open("/test.txt","w");if(!f){Serial.println("Open for write failed");return;}f.println("Smart Home LittleFS OK");f.close();f=LittleFS.open("/test.txt","r");if(!f){Serial.println("Open for read failed");return;}while(f.available())Serial.write(f.read());f.close();}
+const char* TEST_FILE="/component_test.txt";
+void setup(){Serial.begin(115200);delay(250);Serial.println("\nLittleFS test");if(!LittleFS.begin(false)){Serial.println("FAIL: mount failed (no auto-format).");return;}Serial.printf("Total=%u Used=%u\n",LittleFS.totalBytes(),LittleFS.usedBytes());File f=LittleFS.open(TEST_FILE,"w");if(!f){Serial.println("FAIL: write open");return;}size_t n=f.println("Smart Home LittleFS test PASS");f.close();if(!n){Serial.println("FAIL: write");return;}f=LittleFS.open(TEST_FILE,"r");if(!f){Serial.println("FAIL: read open");return;}String result=f.readString();f.close();Serial.print("Readback: ");Serial.println(result);if(result.indexOf("PASS")>=0)Serial.println("PASS: write/read verified");else Serial.println("FAIL: readback mismatch");}
 void loop(){}
