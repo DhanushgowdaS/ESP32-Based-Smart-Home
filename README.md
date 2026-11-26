@@ -53,7 +53,7 @@ Switches use active-low `INPUT_PULLUP` wiring to GND. Verify relay input polarit
 - [ ] Stage 3: LittleFS and configuration persistence
 - [ ] Stage 4: Dashboard and appliance editor
 - [ ] Stage 5: WebSocket state synchronization
-- [ ] Stage 6: Integrated firmware and end-to-end testing
+- [x] Stage 6: Integrated firmware initial implementation (hardware validation still pending)
 
 Final firmware stays separate from individual component test sketches. Dashboard source remains separate and will be copied to LittleFS for deployment.
 
