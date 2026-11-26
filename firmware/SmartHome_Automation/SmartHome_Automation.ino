@@ -164,7 +164,7 @@ void setupRoutes() {
   server.on("/api/all-off",HTTP_POST,[](AsyncWebServerRequest* r){allOff();r->send(200,"application/json",jsonState());});
   server.onNotFound([](AsyncWebServerRequest* r){if(r->method()==HTTP_OPTIONS){r->send(204);}else if(LittleFS.exists(r->url()))r->send(LittleFS,r->url(),"text/plain");else r->send(404,"text/plain","Not found");});
   ws.onEvent([](AsyncWebSocket* server,AsyncWebSocketClient* client,AwsEventType type,void* arg,uint8_t* data,size_t len){
-    if(type==WS_EVT_CONNECT){client->text(jsonState());String cfg;configJson(cfg);client->text(cfg);}
+    if(type==WS_EVT_CONNECT){client->text(jsonState());}
   });
   server.addHandler(&ws);
 }
