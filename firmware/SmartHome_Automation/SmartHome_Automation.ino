@@ -136,7 +136,7 @@ void sendStatus(AsyncWebServerRequest* req) {
   req->send(200,"application/json",jsonState());
 }
 void setupRoutes() {
-  server.on("/",HTTP_GET,[](AsyncWebServerRequest* r){ if(LittleFS.exists("/index.html"))r->send(LittleFS,"/index.html","text/html");else r->send(503,"text/plain","Dashboard files missing in LittleFS");});
+  // Serve HTML, CSS, JavaScript and assets from LittleFS with correct MIME types.\n  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
   server.on("/api/status",HTTP_GET,sendStatus);
   server.on("/api/config",HTTP_GET,[](AsyncWebServerRequest* r){String out;configJson(out);r->send(200,"application/json",out);});
   server.on("/api/config",HTTP_POST,[](AsyncWebServerRequest* r){r->send(400,"application/json","{\"error\":\"Send JSON body\"}");},nullptr,
@@ -162,7 +162,7 @@ void setupRoutes() {
     });
   }
   server.on("/api/all-off",HTTP_POST,[](AsyncWebServerRequest* r){allOff();r->send(200,"application/json",jsonState());});
-  server.onNotFound([](AsyncWebServerRequest* r){if(r->method()==HTTP_OPTIONS){r->send(204);}else if(LittleFS.exists(r->url()))r->send(LittleFS,r->url(),"text/plain");else r->send(404,"text/plain","Not found");});
+  server.onNotFound([](AsyncWebServerRequest* r){if(r->method()==HTTP_OPTIONS){r->send(204);}else r->send(404,"text/plain","Not found");});
   ws.onEvent([](AsyncWebSocket* server,AsyncWebSocketClient* client,AwsEventType type,void* arg,uint8_t* data,size_t len){
     if(type==WS_EVT_CONNECT){client->text(jsonState());}
   });
