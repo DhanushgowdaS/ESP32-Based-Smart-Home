@@ -41,4 +41,8 @@ document.getElementById("connection-settings").addEventListener("click",()=>docu
 document.getElementById("cancel-connection").addEventListener("click",()=>document.getElementById("connection-dialog").close());
 document.getElementById("connection-form").addEventListener("submit",e=>{e.preventDefault();const u=document.getElementById("device-url").value.trim();if(!/^https?:\/\//i.test(u)){document.getElementById("connect-message").textContent="Enter a valid http:// or https:// address.";return;}document.getElementById("connection-dialog").close();connect(u);});
 render();
-// Auto-connect when the dashboard is opened from the ESP32 web server.\nif(location.hostname && location.hostname!=="localhost" && location.hostname!=="127.0.0.1"){connect(location.origin);document.getElementById("device-url").value=location.origin;}\n
+// Auto-connect when dashboard is opened directly from the ESP32 web server.
+if (location.hostname && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
+  connect(location.origin);
+  document.getElementById("device-url").value = location.origin;
+}
