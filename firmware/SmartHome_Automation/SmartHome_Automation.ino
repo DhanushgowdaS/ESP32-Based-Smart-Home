@@ -136,8 +136,6 @@ void sendStatus(AsyncWebServerRequest* req) {
   req->send(200,"application/json",jsonState());
 }
 void setupRoutes() {
-  // Serve HTML, CSS, JavaScript and assets from LittleFS with correct MIME types.
-  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
   server.on("/api/status",HTTP_GET,sendStatus);
   server.on("/api/config",HTTP_GET,[](AsyncWebServerRequest* r){String out;configJson(out);r->send(200,"application/json",out);});
   server.on("/api/config",HTTP_POST,[](AsyncWebServerRequest* r){r->send(400,"application/json","{\"error\":\"Send JSON body\"}");},nullptr,
@@ -168,6 +166,9 @@ void setupRoutes() {
     if(type==WS_EVT_CONNECT){client->text(jsonState());}
   });
   server.addHandler(&ws);
+  // Register the catch-all static file handler LAST so /api/* and /ws
+  // handlers always get a chance to match first.
+  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
 }
 void setup() {
   Serial.begin(115200);delay(250);
