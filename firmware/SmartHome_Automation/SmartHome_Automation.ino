@@ -136,7 +136,8 @@ void sendStatus(AsyncWebServerRequest* req) {
   req->send(200,"application/json",jsonState());
 }
 void setupRoutes() {
-  // Serve HTML, CSS, JavaScript and assets from LittleFS with correct MIME types.\n  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
+  // Serve HTML, CSS, JavaScript and assets from LittleFS with correct MIME types.
+  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
   server.on("/api/status",HTTP_GET,sendStatus);
   server.on("/api/config",HTTP_GET,[](AsyncWebServerRequest* r){String out;configJson(out);r->send(200,"application/json",out);});
   server.on("/api/config",HTTP_POST,[](AsyncWebServerRequest* r){r->send(400,"application/json","{\"error\":\"Send JSON body\"}");},nullptr,
